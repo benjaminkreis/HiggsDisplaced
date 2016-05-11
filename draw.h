@@ -1,5 +1,6 @@
 #include "TStyle.h"
 #include "TROOT.h"
+#include "TPad.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "TString.h"
@@ -24,7 +25,10 @@ class sample {
 
   TFile* file;
   TTree* tree;
+
   UInt_t color = kBlack;
+  
+  TH1D lastHisto;
 };
 sample::sample(TString temp){
   name = temp;
@@ -37,7 +41,7 @@ sample::~sample(){
 
 
 void drawPlots(std::vector<sample*> sampleVector, const TString varname, const int nbins, const float low, const float high,
-	       const TString xtitle, const TString ytitle)
+	       const TString xtitle, const TString ytitle, const TString cutstring = "1")
 {
   std::cout << "Start drawing" << std::endl;
   gStyle->SetOptStat(0);
@@ -76,7 +80,11 @@ void drawPlots(std::vector<sample*> sampleVector, const TString varname, const i
     cout << sampleVector.at(isample)->tree->GetName() << endl;
 
     //Project
-    (sampleVector.at(isample)->tree)->Project(hname, varname);
+    (sampleVector.at(isample)->tree)->Project(hname, varname, cutstring);
+    sampleVector.at(isample)->lastHisto = *(TH1D*)histos[sampleVector.at(isample)->name].Clone("last_"+hname);
+    //sampleVector.at(isample)->lastHisto = histos[sampleVector.at(isample)->name].Clone("last_"+hname);
+    //sampleVector.at(isample)->lastHisto->SetDirectory(0);
+
     //Get what you want from histogram
     if( histos[sampleVector.at(isample)->name].GetMaximum() > max ) max = histos[sampleVector.at(isample)->name].GetMaximum();
     
@@ -87,6 +95,7 @@ void drawPlots(std::vector<sample*> sampleVector, const TString varname, const i
   for(unsigned int isample=0; isample<sampleVector.size(); isample++) {
     
     //Style
+    if(isample==0) histos[sampleVector.at(isample)->name].SetTitle("");
     histos[sampleVector.at(isample)->name].SetLineWidth(2);
     histos[sampleVector.at(isample)->name].SetLineColor(sampleVector.at(isample)->color);
     histos[sampleVector.at(isample)->name].SetMarkerColor(sampleVector.at(isample)->color);
