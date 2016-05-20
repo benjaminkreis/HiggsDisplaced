@@ -59,7 +59,7 @@ void drawPlots(std::vector<sample*> sampleVector, const TString varname, const i
   TCanvas thecanvas("c1", "c1", 640, 640);
   thecanvas.cd();
   
-  float leg_x1=0.67, leg_y1=0.4, leg_x2=0.9, leg_y2=0.2;
+  float leg_x1=0.5, leg_y1=0.6, leg_x2=0.9, leg_y2=0.88;
   TLegend leg(leg_x1, leg_y1, leg_x2, leg_y2);
   leg.SetBorderSize(0);
   leg.SetLineStyle(0);
@@ -81,6 +81,12 @@ void drawPlots(std::vector<sample*> sampleVector, const TString varname, const i
 
     //Project
     (sampleVector.at(isample)->tree)->Project(hname, varname, cutstring);
+
+    //Normalize
+    cout << "!! HISTOGRAM IS NORMALIZED !!" << endl;
+    histos[sampleVector.at(isample)->name].Scale(1.0/histos[sampleVector.at(isample)->name].Integral());
+
+    //Save to last Histo
     sampleVector.at(isample)->lastHisto = *(TH1D*)histos[sampleVector.at(isample)->name].Clone("last_"+hname);
     //sampleVector.at(isample)->lastHisto = histos[sampleVector.at(isample)->name].Clone("last_"+hname);
     //sampleVector.at(isample)->lastHisto->SetDirectory(0);

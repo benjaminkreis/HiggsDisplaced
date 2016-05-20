@@ -3,7 +3,7 @@
 using namespace std;
 
 
-void draw(){
+void draw_in_PV_slices(){
 
   TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
 
@@ -22,9 +22,9 @@ void draw(){
   //drawPlots(sampleVector, "ALPHAMAX_ALLCALOJETS", 20, 0, 1, "ALPHAMAX_ALLCALOJETS", "Events", "NGOODVERTICES<10");
 
   //Gymnastics to plot same sample mutiple times with different cuts
-  //TString var = "ALPHAMAX_ALLCALOJETS"; double min = 0; double max = 1; double ymax = -1;
+  TString var = "ALPHAMAX_ALLCALOJETSMATCHED"; double min = 0; double max = 1; double ymax = -1;
   //TString var = "MEDIANIPLOG10SIG_ALLCALOJETS"; double min = -2; double max = 4; double ymax = 0.25;
-  TString var = "MEDIANLOG10TRACKANGLE_ALLCALOJETS"; double min = -4.5; double max = 0.5; double ymax = 0.25;
+  //TString var = "MEDIANLOG10TRACKANGLE_ALLCALOJETS"; double min = -4.5; double max = 0.5; double ymax = 0.35;
 
   std::vector<TH1D*> hvec;
   drawPlots(sampleVector, var, 20, min, max, var, "Events", "NGOODVERTICES<=5");
@@ -59,5 +59,82 @@ void draw(){
   }
   leg.Draw();
   c.Print("overlay_"+var+".pdf");
+
+}
+
+
+void draw_fixedmass_varylifetime(){
+
+  TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
+  
+  std::vector<sample*> sampleVector;
+  
+  //WH, pick mass, overlay lifetime
+  TString masspoint = "40";
+  sample sample1(path+"allHistos_WH_HToSSTobbbb_WToLNu_MH125_MS"+masspoint+"_ctauS0_13TeV.root");
+  sample1.humanName = "WH, bbbb, mS="+masspoint+", ctau=0";
+  sample1.color = kMagenta;
+  sampleVector.push_back(&sample1);
+
+  sample sample2(path+"allHistos_WH_HToSSTobbbb_WToLNu_MH125_MS"+masspoint+"_ctauS1_13TeV.root");
+  sample2.humanName = "WH, bbbb, mS="+masspoint+", ctau=1";
+  sample2.color = kMagenta+1;
+  sampleVector.push_back(&sample2);
+
+  sample sample3(path+"allHistos_WH_HToSSTobbbb_WToLNu_MH125_MS"+masspoint+"_ctauS10_13TeV.root");
+  sample3.humanName = "WH, bbbb, mS="+masspoint+", ctau=10";
+  sample3.color = kMagenta+2;
+  sampleVector.push_back(&sample3);
+
+  sample sample4(path+"allHistos_WH_HToSSTobbbb_WToLNu_MH125_MS"+masspoint+"_ctauS100_13TeV.root");
+  sample4.humanName = "WH, bbbb, mS="+masspoint+", ctau=100";
+  sample4.color = kMagenta+3;
+  sampleVector.push_back(&sample4);
+
+  sample sample5(path+"allHistos_WH_HToSSTobbbb_WToLNu_MH125_MS"+masspoint+"_ctauS1000_13TeV.root");
+  sample5.humanName = "WH, bbbb, mS="+masspoint+", ctau=1000";
+  sample5.color = kMagenta+4;
+  sampleVector.push_back(&sample5);
+
+  drawPlots(sampleVector, "ALPHAMAX_ALLCALOJETS", 20, 0, 1, "ALPHAMAX_ALLCALOJETS", "Events");
+  drawPlots(sampleVector, "MEDIANIPLOG10SIG_ALLCALOJETS", 20, -2, 4, "MEDIANIPLOG10SIG_ALLCALOJETS", "Events");
+  drawPlots(sampleVector, "MEDIANLOG10TRACKANGLE_ALLCALOJETS", 20, -4.5, 0.5, "MEDIANLOG10TRACKANGLE_ALLCALOJETS", "Events");
+  
+}
+
+
+void draw_varymass_fixlifetime(){
+
+  TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
+  
+  std::vector<sample*> sampleVector;
+  
+  //WH, pick lifetime, vary mass
+  TString ctaupoint = "1000";
+  sample sample1(path+"allHistos_WH_HToSSTobbbb_WToLNu_MH125_MS10_ctauS"+ctaupoint+"_13TeV.root");
+  sample1.humanName = "WH, bbbb, mS=10, ctau="+ctaupoint+"";
+  sample1.color = kMagenta;
+  sampleVector.push_back(&sample1);
+
+  sample sample2(path+"allHistos_WH_HToSSTobbbb_WToLNu_MH125_MS25_ctauS"+ctaupoint+"_13TeV.root");
+  sample2.humanName = "WH, bbbb, mS=25, ctau="+ctaupoint+"";
+  sample2.color = kMagenta+1;
+  sampleVector.push_back(&sample2);
+
+  sample sample3(path+"allHistos_WH_HToSSTobbbb_WToLNu_MH125_MS40_ctauS"+ctaupoint+"_13TeV.root");
+  sample3.humanName = "WH, bbbb, mS=40, ctau="+ctaupoint+"";
+  sample3.color = kMagenta+2;
+  sampleVector.push_back(&sample3);
+
+  drawPlots(sampleVector, "ALPHAMAX_ALLCALOJETS", 20, 0, 1, "ALPHAMAX_ALLCALOJETS", "Events");
+  drawPlots(sampleVector, "MEDIANIPLOG10SIG_ALLCALOJETS", 20, -2, 4, "MEDIANIPLOG10SIG_ALLCALOJETS", "Events");
+  drawPlots(sampleVector, "MEDIANLOG10TRACKANGLE_ALLCALOJETS", 20, -4.5, 0.5, "MEDIANLOG10TRACKANGLE_ALLCALOJETS", "Events");
+  
+}
+
+
+void draw(){
+
+  draw_in_PV_slices();
 
 }
