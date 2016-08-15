@@ -5,7 +5,8 @@ using namespace std;
 
 void draw_in_PV_slices(){
 
-  TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
+  //TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
+  TString path = "root://cmsxrootd.fnal.gov//store/user/lpchbb/mwalker/AnalysisTrees/";
 
   std::vector<sample*> sampleVector;
 
@@ -22,9 +23,10 @@ void draw_in_PV_slices(){
   //drawPlots(sampleVector, "ALPHAMAX_ALLCALOJETS", 20, 0, 1, "ALPHAMAX_ALLCALOJETS", "Events", "NGOODVERTICES<10");
 
   //Gymnastics to plot same sample mutiple times with different cuts
-  TString var = "ALPHAMAX_ALLCALOJETSMATCHED"; double min = 0; double max = 1; double ymax = -1;
+  //TString var = "ALPHAMAX_ALLCALOJETSMATCHED"; double min = 0; double max = 1; double ymax = -1;
   //TString var = "MEDIANIPLOG10SIG_ALLCALOJETS"; double min = -2; double max = 4; double ymax = 0.25;
   //TString var = "MEDIANLOG10TRACKANGLE_ALLCALOJETS"; double min = -4.5; double max = 0.5; double ymax = 0.35;
+  TString var = "BETA_BASICCALOJETSMATCHED"; double min = 0; double max = 1; double ymax = -1;
 
   std::vector<TH1D*> hvec;
   drawPlots(sampleVector, var, 20, min, max, var, "Events", "NGOODVERTICES<=5");
@@ -65,8 +67,9 @@ void draw_in_PV_slices(){
 
 void draw_fixedmass_varylifetime(){
 
-  TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
-  
+  //TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
+  TString path = "root://cmsxrootd.fnal.gov//store/user/lpchbb/mwalker/AnalysisTrees/";
+    
   std::vector<sample*> sampleVector;
   
   //WH, pick mass, overlay lifetime
@@ -105,8 +108,9 @@ void draw_fixedmass_varylifetime(){
 
 void draw_varymass_fixlifetime(){
 
-  TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
-  
+  //TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
+  TString path = "root://cmsxrootd.fnal.gov//store/user/lpchbb/mwalker/AnalysisTrees/";
+
   std::vector<sample*> sampleVector;
   
   //WH, pick lifetime, vary mass
@@ -126,15 +130,44 @@ void draw_varymass_fixlifetime(){
   sample3.color = kMagenta+2;
   sampleVector.push_back(&sample3);
 
-  drawPlots(sampleVector, "ALPHAMAX_ALLCALOJETS", 20, 0, 1, "ALPHAMAX_ALLCALOJETS", "Events");
-  drawPlots(sampleVector, "MEDIANIPLOG10SIG_ALLCALOJETS", 20, -2, 4, "MEDIANIPLOG10SIG_ALLCALOJETS", "Events");
-  drawPlots(sampleVector, "MEDIANLOG10TRACKANGLE_ALLCALOJETS", 20, -4.5, 0.5, "MEDIANLOG10TRACKANGLE_ALLCALOJETS", "Events");
+  drawPlots(sampleVector, "TOTALTRACKPT_BASICCALOJETSMATCHED", 20, 0, 50, "TOTALTRACKPT_BASICCALOJETSMATCHED", "Events");
+  //drawPlots(sampleVector, "ALPHAMAX_ALLCALOJETS", 20, 0, 1, "ALPHAMAX_ALLCALOJETS", "Events");
+  //drawPlots(sampleVector, "MEDIANIPLOG10SIG_ALLCALOJETS", 20, -2, 4, "MEDIANIPLOG10SIG_ALLCALOJETS", "Events");
+  //drawPlots(sampleVector, "MEDIANLOG10TRACKANGLE_ALLCALOJETS", 20, -4.5, 0.5, "MEDIANLOG10TRACKANGLE_ALLCALOJETS", "Events");
+  
+}
+
+void draw_light(){
+
+  //TString path = "/uscms_data/d3/mwalker/VHdisplaced/20160426_runAnalyisTrees/";
+  TString path = "root://cmsxrootd.fnal.gov//store/user/lpchbb/mwalker/AnalysisTrees/";
+
+  std::vector<sample*> sampleVector;
+  
+  //WH, pick lifetime, vary mass
+  sample sample1(path+"allHistos_WH_HToSSTodddd_WToLNu_MH125_MS25_ctauS10_13TeV.root");
+  sample1.humanName = "WH, dddd, mS=25, ctau=10";
+  sample1.color = kMagenta;
+  sampleVector.push_back(&sample1);
+
+  sample sample2(path+"allHistos_WH_HToSSTobbbb_WToLNu_MH125_MS25_ctauS10_13TeV.root");
+  sample2.humanName = "WH, bbbb, mS=25, ctau=10";
+  sample2.color = kMagenta+1;
+  sampleVector.push_back(&sample2);
+
+  drawPlots(sampleVector, "ALPHAMAX_BASICCALOJETSMATCHED", 20, 0, 1, "ALPHAMAX_BASICCALOJETSMATCHED", "Events");
+  drawPlots(sampleVector, "BETA_BASICCALOJETSMATCHED", 20, 0, 1, "BETA_BASICCALOJETSMATCHED", "Events");
+  drawPlots(sampleVector, "MEDIANIPLOG10SIG_BASICCALOJETSMATCHED", 20, -2, 4, "MEDIANIPLOG10SIG_BASICCALOJETSMATCHED", "Events");
+  drawPlots(sampleVector, "MEDIANLOG10TRACKANGLE_BASICCALOJETSMATCHED", 20, -4.5, 0.5, "MEDIANLOG10TRACKANGLE_BASICCALOJETSMATCHED", "Events");
+  drawPlots(sampleVector, "NMATCHEDTRACKS_BASICCALOJETSMATCHED", 20, 0, 20, "NMATCHEDTRACKS_BASICCALOJETSMATCHED", "Events");
+  drawPlots(sampleVector, "AVFVERTEXTRACKMASS_BASICCALOJETSMATCHED", 20, 0, 20, "AVFVERTEXTRACKMASS_BASICCALOJETSMATCHED", "Events");
+  drawPlots(sampleVector, "TOTALTRACKPT_BASICCALOJETSMATCHED", 20, 0, 50, "TOTALTRACKPT_BASICCALOJETSMATCHED", "Events");
   
 }
 
 
 void draw(){
-
-  draw_in_PV_slices();
-
+  //draw_in_PV_slices();
+  draw_light();
+  //draw_varymass_fixlifetime();
 }

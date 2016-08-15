@@ -113,7 +113,7 @@ void drawPlots(std::vector<sample*> sampleVector, const TString varname, const i
     leg.AddEntry(&histos[sampleVector.at(isample)->name], sampleVector.at(isample)->humanName, "L");
 
     //Draw histogram
-    TString drawOptions = "HIST";
+    TString drawOptions = "HIST E";
     if(ndrawn>0) drawOptions += " SAME";
     if(ndrawn==0) histos[sampleVector.at(isample)->name].SetMaximum(1.1*max);
     if(ndrawn==0) histos[sampleVector.at(isample)->name].SetMinimum(plotMinimum_);
